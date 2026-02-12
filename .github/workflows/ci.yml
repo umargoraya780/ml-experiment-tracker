@@ -36,10 +36,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ml-tracker:latest
-      - name: Build and Push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
           tags: umargoraya780/ml-tracker:latest
