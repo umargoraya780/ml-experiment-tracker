@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
 
-# 1. Database Configuration [cite: 62-67]
+# 1. Database Configuration
 DB_USER = os.getenv("DB_USER", "mluser")
 DB_PASS = os.getenv("DB_PASSWORD", "mlpassword")
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -17,7 +17,7 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
-# 2. Experiment Model Definition [cite: 18-25]
+# 2. Experiment Model Definition
 class Experiment(Base):
     __tablename__ = "experiments"
     id = Column(Integer, primary_key=True, index=True)
@@ -27,7 +27,12 @@ class Experiment(Base):
     loss = Column(Float)
     timestamp = Column(DateTime, default=datetime.utcnow)
 
-Base.metadata.create_all(bind=engine) # Auto-create table [cite: 59]
+# Create tables only if database is available
+def init_db():
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception:
+        pass
 
 app = FastAPI()
 
@@ -37,7 +42,12 @@ def get_db():
     try: yield db
     finally: db.close()
 
-# 3. API Endpoints [cite: 29-48]
+# Initialize tables on startup
+@app.on_event("startup")
+def startup_event():
+    init_db()
+
+# 3. API Endpoints
 @app.get("/health")
 def health_check():
     return {"status": "running"}

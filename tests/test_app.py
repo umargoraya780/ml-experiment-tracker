@@ -6,7 +6,7 @@ client = TestClient(app)
 def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "running"} # [cite: 31-32]
+    assert response.json() == {"status": "running"}
 
 def test_placeholder():
-    assert True # [cite: 91]
+    assert True
