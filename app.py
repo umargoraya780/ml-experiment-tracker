@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI, Depends
-from sqlalchemy import create_all_tables, create_engine, Column, Integer, String, Float, DateTime
+# Fixed line below:
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
