@@ -16,7 +16,9 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install fastapi uvicorn sqlalchemy psycopg2-binary pytest httpx
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run tests
         run: |
@@ -34,4 +36,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: goraya780/ml-tracker:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ml-tracker:latest
